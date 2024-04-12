@@ -13,19 +13,23 @@ NAME = "TheDarkSide"
 
 def parseArgs() -> Dict[str,Any]:
     arg_d = {
-
+        "mode": None,       #? scrape / crawl (str)
+        "depth": None,      #? if crawl, depth to go from start (int)
+        "url_list": None,   #? if scrape, the list of input urls (file)
+        "search": None,     #? if scrape, the term(s) to search for (str)
+        "out": None,        #? the output file name (will always be in /out)      
     }
     ap = ArgumentParser()
     ap.description = f"{NAME} - Dark web scraper and crawler"
-    
-    return arg_d
+    #TODO
+    return vars(ap.parse_args())
 
 
 
 def buildOutPath() -> str:
     cwd = getcwd()
-    if ("TheDarkSide" not in cwd):
-        perror(f"Not working from a standard directory ({NAME} expected), aborting")
+    if (NAME not in cwd):
+        perror(f"Not working from a standard directory ('{NAME}' expected), aborting")
         exit(1)
     out_path = ""
     for d in cwd.split("/"):
@@ -42,7 +46,7 @@ def main() -> None:
     out_path = buildOutPath()
     args = parseArgs()
 
-    print(out_path)
+    #TODO
     
     return
 
