@@ -46,6 +46,7 @@ class Crawler:
                 self.crawl(v3,level+1,succ_errs)
 
     def run(self) -> None:
+        pinfo(f"Crawling {len(self.url_list)} URLs")
         succ_errs = [0,0]
         for url in self.url_list:
             self.crawl(url, 0, succ_errs)

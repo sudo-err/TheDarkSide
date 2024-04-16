@@ -20,6 +20,7 @@ class Scraper:
         return
 
     def run(self) -> None:
+        pinfo(f"Scraping {len(self.url_list)} URLs")
         succ_errs = [0,0]
 
         if self.parallel:
