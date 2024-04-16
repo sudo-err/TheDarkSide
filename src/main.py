@@ -34,6 +34,12 @@ def parseArgs() -> Dict[str,Any]:
         help="The file containing the list of URLs to scrape/crawl"
     )
     ap.add_argument(
+        "--parallel", "-p",
+        action='store_true',
+        required=False,
+        help="In scraping mode, performs the scraping in a parallel fashion (faster, less responsive output)"
+    )
+    ap.add_argument(
         "--depth","-d",
         default=5,
         type=int,
@@ -91,16 +97,16 @@ def parseArgs() -> Dict[str,Any]:
         exit(1)
     if (args['output'] is None):
         args['output'] = datetime.now().strftime("%y-%m-%d_%H:%M")+".txt"
-    for port in args['tor-ports']:
+    for port in args['tor_ports']:
         if (port < 1024) or (port > 65535):
             perror(f"Invalid TOR port number: {port}")
             exit(1)
-    args['tor-ports'] = tuple(args['tor-ports'])
-    if (args['tor-cport'] < 1024) or (args["tor-cport"] > 65535):
-        perror(f"Invalid TOR cport number: {args['tor-cport']}")
+    args['tor_ports'] = tuple(args['tor_ports'])
+    if (args['tor_cport'] < 1024) or (args["tor_cport"] > 65535):
+        perror(f"Invalid TOR cport number: {args['tor_cport']}")
         exit(1)
-    if (args['tor-autochange-id'] < 1):
-        perror(f"Invalid autochange-id number: {args['tor-autochange-id']}")
+    if (args['tor_autochange_id'] < 1):
+        perror(f"Invalid autochange-id number: {args['tor_autochange_id']}")
         exit(1)
     
     return args
@@ -128,17 +134,19 @@ def main() -> None:
 
     mode:str = args['mode']
     url_list:list = readUrlList(args['list'])
+    parallel:bool = args['parallel']
     depth:int = args['depth']
     search:list = args['search']
     out_path:str = join(out_dir,args['output'])
 
-    tor_ports:tuple = args['tor-ports']
-    tor_cport:int = args['tor-cport']
-    autochange_id:int = args['tor-autochange-id']
+    tor_ports:tuple = args['tor_ports']
+    tor_cport:int = args['tor_cport']
+    autochange_id:int = args['tor_autochange_id']
 
     if (mode == "scrape"):
         scraper = Scraper(
             url_list=url_list,
+            parallel=parallel,
             search=search,
             out_path=out_path,
             tor_ports=tor_ports,

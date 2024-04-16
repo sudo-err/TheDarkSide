@@ -35,9 +35,9 @@ class Crawler:
             return
         else:
             succ_errs[0] += 1
-            text = r.text
-            onion_v2 = self.onionv2_regex.findall(text)
-            onion_v3 = self.onionv3_regex.findall(text)
+            content = r.text
+            onion_v2 = self.onionv2_regex.findall(content)
+            onion_v3 = self.onionv3_regex.findall(content)
             for v2 in onion_v2:
                 appendOutput(self.out_path,f"{v2}\n")
                 self.crawl(v2,level+1,succ_errs)
