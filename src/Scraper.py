@@ -35,4 +35,5 @@ class Scraper:
                         appendOutput(self.out_path,f"{word} FOUND: {r.url}\n")
         pinfo(f"DONE: scraped {succ} URLs successfully, {errs} errors")
         #appendOutput(self.out_path,f"[INFO] DONE: scraped {succ} URLs successfully, {errs} errors\n")
+        pinfo(f"Output file can be found in {self.out_path}")
         return 

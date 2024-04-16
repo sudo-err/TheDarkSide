@@ -51,4 +51,5 @@ class Crawler:
             self.crawl(url, 0, succ_errs)
         pinfo(f"DONE: crawled {succ_errs[0]} URLs successfully, {succ_errs[1]} errors")
         #appendOutput(self.out_path,f"[INFO] DONE: crawled {succ_errs[0]} URLs successfully, {succ_errs[1]} errors")
+        pinfo(f"Output file can be found in {self.out_path}")
         return
