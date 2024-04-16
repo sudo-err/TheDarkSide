@@ -20,14 +20,17 @@ class Crawler:
         self.onionv3_regex = re.compile(r"\b[a-z2-7]{56}\.onion\b")
         return
 
-    def crawl(self, url:str, level:int, succ_errs:list) -> None:
+    def crawl(self, url:str, level:int, succ_errs:list, visited:set) -> None:
         if (level > self.depth):
-            pinfo("Maximum depth reached, crawler stopping")
+            #pinfo("Maximum depth reached, crawler stopping")
             #appendOutput(self.out_path,f"[INFO] Maximum depth reached, crawler stopping")
+            return
+        if (url in visited):
             return
         pinfo(f"CRAWLING: {url}")
         #appendOutput(self.out_path,f"[INFO] Crawling: {url}")
         r = self.tor.get(url)
+        visited.add(url)
         if (not r.ok):
             succ_errs[1] += 1
             pwarning(f"{r.url} - {r.status_code}")
@@ -40,16 +43,17 @@ class Crawler:
             onion_v3 = self.onionv3_regex.findall(content)
             for v2 in onion_v2:
                 appendOutput(self.out_path,f"{v2}\n")
-                self.crawl(v2,level+1,succ_errs)
+                self.crawl("http://"+v2,level+1,succ_errs,visited)
             for v3 in onion_v3:
                 appendOutput(self.out_path,f"{v3}\n")
-                self.crawl(v3,level+1,succ_errs)
+                self.crawl("http://"+v3,level+1,succ_errs,visited)
 
     def run(self) -> None:
         pinfo(f"Crawling {len(self.url_list)} URLs")
         succ_errs = [0,0]
+        visited = set()
         for url in self.url_list:
-            self.crawl(url, 0, succ_errs)
+            self.crawl(url, 0, succ_errs, visited)
         pinfo(f"DONE: crawled {succ_errs[0]} URLs successfully, {succ_errs[1]} errors")
         #appendOutput(self.out_path,f"[INFO] DONE: crawled {succ_errs[0]} URLs successfully, {succ_errs[1]} errors")
         pinfo(f"Output file can be found in {self.out_path}")
