@@ -29,7 +29,12 @@ class Crawler:
             return
         pinfo(f"CRAWLING: {url}")
         #appendOutput(self.out_path,f"[INFO] Crawling: {url}")
-        r = self.tor.get(url)
+        try:
+            r = self.tor.get(url)
+        except:
+            pwarning(f"Unable to GET: {url}")
+            succ_errs[1] += 1
+            return
         visited.add(url)
         if (not r.ok):
             succ_errs[1] += 1
@@ -43,10 +48,12 @@ class Crawler:
             onion_v3 = self.onionv3_regex.findall(content)
             for v2 in onion_v2:
                 appendOutput(self.out_path,f"{v2}\n")
-                self.crawl("http://"+v2,level+1,succ_errs,visited)
+                if (level < self.depth):
+                    self.crawl("http://"+v2,level+1,succ_errs,visited)
             for v3 in onion_v3:
                 appendOutput(self.out_path,f"{v3}\n")
-                self.crawl("http://"+v3,level+1,succ_errs,visited)
+                if (level < self.depth):
+                    self.crawl("http://"+v3,level+1,succ_errs,visited)
 
     def run(self) -> None:
         pinfo(f"Crawling {len(self.url_list)} URLs")

@@ -1,5 +1,6 @@
 from requests_tor import RequestsTor
 from utils import *
+import re
 
 class Scraper:
 
@@ -32,26 +33,37 @@ class Scraper:
                     #appendOutput(self.out_path,f"[WARN] {r.url} - {r.status_code}\n")
                 else:
                     succ_errs[0] += 1
-                    content = r.text.lower()
+                    content = r.text
+                    title = "NAME_NOT_FOUND"
+                    if ("<title" in content):
+                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE).group(1)
                     for word in self.search:
-                        if word.lower() in content:
-                            pinfo(f"'{word}' FOUND: {r.url}")
-                            appendOutput(self.out_path,f"'{word}' FOUND: {r.url}\n")
+                        if word.lower() in content.lower():
+                            pinfo(f"'{word}' FOUND: {r.url} ({title})")
+                            appendOutput(self.out_path,f"'{word}' FOUND: {r.url} ({title})\n")
 
         else:
             for url in self.url_list:
-                r = self.tor.get(url)
+                try:
+                    r = self.tor.get(url)
+                except:
+                    pwarning(f"Unable to GET: {url}")
+                    succ_errs[1] += 1
+                    continue
                 if (not r.ok):
                     succ_errs[1] += 1
                     pwarning(f"{r.url} - {r.status_code}")
                     #appendOutput(self.out_path,f"[WARN] {r.url} - {r.status_code}\n")
                 else:
                     succ_errs[0] += 1
-                    content = r.text.lower()
+                    content = r.text
+                    title = "NAME_NOT_FOUND"
+                    if ("<title" in content):
+                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE).group(1)         
                     for word in self.search:
-                        if word.lower() in content:
-                            pinfo(f"'{word}' FOUND: {r.url}")
-                            appendOutput(self.out_path,f"'{word}' FOUND: {r.url}\n")
+                        if word.lower() in content.lower():
+                            pinfo(f"'{word}' FOUND: {r.url} ({title})")
+                            appendOutput(self.out_path,f"'{word}' FOUND: {r.url} ({title})\n")
 
         pinfo(f"DONE: scraped {succ_errs[0]} URLs successfully, {succ_errs[1]} errors")
         #appendOutput(self.out_path,f"[INFO] DONE: scraped {succ} URLs successfully, {errs} errors\n")

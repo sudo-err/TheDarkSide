@@ -37,7 +37,7 @@ def parseArgs() -> Dict[str,Any]:
         "--parallel", "-p",
         action='store_true',
         required=False,
-        help="In scraping mode, performs the scraping in a parallel fashion (faster, less responsive output)"
+        help="In scraping mode, performs the scraping in a parallel fashion (faster, but less responsive output)"
     )
     ap.add_argument(
         "--depth","-d",
