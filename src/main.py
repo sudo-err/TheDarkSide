@@ -41,10 +41,10 @@ def parseArgs() -> Dict[str,Any]:
     )
     ap.add_argument(
         "--depth","-d",
-        default=5,
+        default=3,
         type=int,
         required=False,
-        help="In crawling mode, sets the maximum depth the crawler goes (default: 5, max: 10)"
+        help="In crawling mode, sets the maximum depth the crawler goes (default: 3, max: 10)"
     )
     ap.add_argument(
         "--search","-s",

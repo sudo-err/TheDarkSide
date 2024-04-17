@@ -36,7 +36,9 @@ class Scraper:
                     content = r.text
                     title = "NAME_NOT_FOUND"
                     if ("<title" in content):
-                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE).group(1)
+                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE)
+                        if (title is not None): title = title.group(1)
+                        else: title = "NAME_NOT_FOUND"
                     for word in self.search:
                         if word.lower() in content.lower():
                             pinfo(f"'{word}' FOUND: {r.url} ({title})")
@@ -45,6 +47,7 @@ class Scraper:
         else:
             for url in self.url_list:
                 try:
+                    pinfo(f"SCRAPING: {url}")
                     r = self.tor.get(url)
                 except:
                     pwarning(f"Unable to GET: {url}")
@@ -59,7 +62,9 @@ class Scraper:
                     content = r.text
                     title = "NAME_NOT_FOUND"
                     if ("<title" in content):
-                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE).group(1)         
+                        title = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE)
+                        if (title is not None): title = title.group(1)
+                        else: title = "NAME_NOT_FOUND"
                     for word in self.search:
                         if word.lower() in content.lower():
                             pinfo(f"'{word}' FOUND: {r.url} ({title})")
