@@ -4,8 +4,8 @@ from utils import *
 
 from typing import Any, Dict
 from argparse import ArgumentParser
-from os import getcwd
-from os.path import isfile, join
+from os import getcwd, mkdir
+from os.path import isfile, isdir, join
 from datetime import datetime
 
 NAME = "TheDarkSide"
@@ -124,6 +124,8 @@ def buildOutDir() -> str:
         if d == NAME:
             out_path += "/out"
             break
+    if (not isdir(out_path)):
+        mkdir(out_path)
     return out_path
 
 

@@ -1,13 +1,13 @@
 from sys import stdout, stderr
 
-def pinfo(msg:str) -> None:
-    print(f"[INFO] {msg}", file=stdout)
+def pinfo(msg:str, end:str="\n") -> None:
+    print(f"[INFO] {msg}", end=end, file=stdout)
 
-def pwarning(msg:str) -> None:
-    print(f"[WARN] {msg}", file=stdout)
+def pwarning(msg:str, end:str="\n") -> None:
+    print(f"[WARN] {msg}", end=end, file=stdout)
 
-def perror(msg:str) -> None:
-    print(f"[ERROR] {msg}", file=stderr)
+def perror(msg:str, end:str="\n") -> None:
+    print(f"[ERROR] {msg}", end=end, file=stderr)
 
 def appendOutput(out_path:str, append:str) -> None:
     with open(out_path,"a",encoding="utf-8") as out_f:
