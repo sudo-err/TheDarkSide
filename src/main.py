@@ -15,7 +15,7 @@ NAME = "TheDarkSide"
 
 def parseArgs() -> Dict[str,Any]:
     ap = ArgumentParser()
-    ap.description = f"{NAME} - Dark web scraper and crawler"
+    ap.description = f"{NAME} - Dark web scraper and crawler (by sudo-simon)"
     
     #? Args declarations
     ap.add_argument(
