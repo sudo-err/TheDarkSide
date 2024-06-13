@@ -24,7 +24,7 @@ def parseArgs() -> Dict[str,Any]:
         type=str,
         choices=("scrape","crawl"),
         required=True,
-        help="The mode to use, one of [scrape,crawl]"
+        help="The mode to use, one of {scrape, crawl}"
     )
     ap.add_argument(
         "--list","-l",
@@ -37,14 +37,14 @@ def parseArgs() -> Dict[str,Any]:
         "--parallel", "-p",
         action='store_true',
         required=False,
-        help="In scraping mode, performs the scraping in a parallel fashion (faster, but less responsive output)"
+        help="In scraping mode, performs the scraping in a parallel fashion (faster but less responsive output, deprecated with large URLs lists)"
     )
     ap.add_argument(
         "--depth","-d",
         default=3,
         type=int,
         required=False,
-        help="In crawling mode, sets the maximum depth the crawler goes (default: 3, max: 10)"
+        help="In crawling mode, sets the maximum depth the crawler reaches (default: 3, max: 10)"
     )
     ap.add_argument(
         "--search","-s",
@@ -60,6 +60,12 @@ def parseArgs() -> Dict[str,Any]:
         type=str,
         required=False,
         help="The name of the output file (will be saved in /out)"
+    )
+    ap.add_argument(
+        "--titles","-t",
+        action='store_true',
+        required=False,
+        help="In crawling mode, stores the title of the webpages in the output file (longer execution times as an additional layer of requests is needed)"
     )
     ap.add_argument(
         "--tor-ports",
@@ -140,6 +146,7 @@ def main() -> None:
     depth:int = args['depth']
     search:list = args['search']
     out_path:str = join(out_dir,args['output'])
+    retrieve_titles:bool = args['titles']
 
     tor_ports:tuple = args['tor_ports']
     tor_cport:int = args['tor_cport']
@@ -162,6 +169,7 @@ def main() -> None:
             url_list=url_list,
             depth=depth,
             out_path=out_path,
+            retrieve_titles=retrieve_titles,
             tor_ports=tor_ports,
             tor_cport=tor_cport,
             autochange_id=autochange_id
