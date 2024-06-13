@@ -67,7 +67,7 @@ class Scraper:
 
                 succ_errs[0] += 1
                 content = r.text
-                title = "NAME_NOT_FOUND"
+                title = "TITLE_NOT_FOUND"
                 if ("<title" in content):
                     tmp = re.search("<\W*title\W*(.*)</title",content,re.IGNORECASE)
                     if (tmp is not None): title = tmp.group(1)

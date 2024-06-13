@@ -19,6 +19,6 @@ def readUrlList(filepath:str) -> list:
     with open(filepath, "r", encoding="utf-8") as in_f:
         l = [line.strip() for line in in_f.readlines() if (line.strip() != "")]
     for i in range(len(l)):
-        if ("http" not in l[i]):
+        if (not l[i].startswith("http://")):
             l[i] = "http://"+l[i]
     return list(set(l))
