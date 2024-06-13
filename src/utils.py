@@ -21,4 +21,6 @@ def readUrlList(filepath:str) -> list:
     for i in range(len(l)):
         if (not l[i].startswith("http://")):
             l[i] = "http://"+l[i]
+        if (" (" in l[i]):
+            l[i] = l[i].split(" ")[0]
     return list(set(l))
