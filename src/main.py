@@ -31,7 +31,7 @@ def parseArgs() -> Dict[str,Any]:
         default=None,
         type=str,
         required=True,
-        help="The file containing the list of URLs to scrape/crawl"
+        help="The file containing the list of URLs to scrape/crawl (use 'DOWNLOAD' to retrieve it online)"
     )
     ap.add_argument(
         "--parallel", "-p",
@@ -92,7 +92,7 @@ def parseArgs() -> Dict[str,Any]:
 
     #? Args checks
     args = vars(ap.parse_args())
-    if (not isfile(args['list'])):
+    if (not isfile(args['list'])) and (args['list'] != "DOWNLOAD"):
         perror(f"Invalid file: {args['list']}")
         exit(1)
     if (args['depth'] < 1) or (args['depth'] > 10):
